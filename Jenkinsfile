@@ -11,21 +11,15 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                // Use Node.js environment, specify the version if necessary
-                nodejs(nodeJSInstallationName: 'NodeJS') {
-                    // Run npm install to install dependencies
-                    sh 'npm install'
-                }
+                // Run npm install to install dependencies
+                sh 'npm install'
             }
         }
 
         stage('Run Jest Tests') {
             steps {
-                // Again, specifying Node.js environment
-                nodejs(nodeJSInstallationName: 'NodeJS') {
-                    // Run Jest tests
-                    sh 'jest'
-                }
+                // Run Jest tests
+                sh 'jest'
             }
         }
     }
