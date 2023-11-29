@@ -10,6 +10,13 @@ pipeline {
             }
         }
 
+        stage('Install jest') {
+            steps {
+                // Run npm install to install dependencies
+                sh 'npm install jest-cli --g'
+            }
+        }
+
         stage('Install dependencies') {
             steps {
                 // Run npm install to install dependencies
