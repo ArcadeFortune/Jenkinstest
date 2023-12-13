@@ -1,6 +1,9 @@
 pipeline {
     agent any
-    tools {nodejs 'node'}
+    tools {
+        nodejs 'node'
+        docker 'docker'
+        }
 
     stages {
         stage('Checkout') {
@@ -10,24 +13,25 @@ pipeline {
             }
         }
 
-        stage('Install jest') {
+        stage('Build Docker image') {
             steps {
                 // Run npm install to install dependencies
-                sh 'npm install jest-cli --g'
+                sh 'docker build -t dockertest .'
             }
         }
 
-        stage('Install dependencies') {
+        stage('Run Docker image') {
             steps {
                 // Run npm install to install dependencies
-                sh 'npm install'
+                sh 'docker run --name champignions -d dockertest 3000:3000'
             }
         }
 
+        
         stage('Run Jest Tests') {
             steps {
                 // Run Jest tests
-                sh 'jest'
+                sh 'docker exec -it champignions npm run test'
             }
         }
     }
