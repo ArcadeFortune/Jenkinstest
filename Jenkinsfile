@@ -14,18 +14,15 @@ pipeline {
 
         stage('Build Docker image') {
             steps {
-                // Run npm install to install dependencies
-                sh 'docker build -t dockertest .'
+                sh 'docker build -t champignions --no-cache .'
             }
         }
 
         stage('Run Docker image') {
             steps {
-                // Run npm install to install dependencies
-                sh 'docker run --name champignions -d dockertest 3000:3000'
+                sh 'docker run --name champignions -d champignions 3000:3000'
             }
         }
-
         
         stage('Run Jest Tests') {
             steps {
@@ -33,6 +30,19 @@ pipeline {
                 sh 'docker exec -it champignions npm run test'
             }
         }
+
+        stage('delete docker container') {
+            steps {
+                sh 'docker rm -f champignions'
+            }
+        }
+
+        stage('delete docker image') {
+            steps {
+                sh 'docker rmi -f champignions'
+            }
+        }
+
     }
 
     post {
